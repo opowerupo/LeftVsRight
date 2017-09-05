@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>pixi框架</title>
+    <style>* {padding: 0; margin: 0}</style>
+    <script src="../lib/pixi.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var type = "WebGL"
+    if(!PIXI.utils.isWebGLSupported()){
+        type = "canvas"
+    }
+    PIXI.utils.sayHello(type);
+
+    //Aliases
+    var Container = PIXI.Container,
+        autoDetectRenderer = PIXI.autoDetectRenderer,
+        loader = PIXI.loader,
+        resources = PIXI.loader.resources,
+        TextureCache = PIXI.utils.TextureCache,
+        Rectangle = PIXI.Rectangle,
+        Sprite = PIXI.Sprite;
+
+    var renderer = autoDetectRenderer(500, 300);
+    document.body.appendChild(renderer.view);
+    var stage = new Container();
+
+    loader.add("../images/xiongben.jpg").load(setup);
+    function setup(){
+        //This code will run when the loader has finished loading the image
+        var xiongben = new Sprite(resources["../images/xiongben.jpg"].texture);
+
+        //缩放
+        xiongben.scale.set(0.5, 0.5);
+
+        //位置
+        xiongben.position.set((500 - xiongben.width)/2, (300 -xiongben.height)/2);
+
+        //设置中心点(像素)
+        xiongben.pivot.set(95, 52.5);
+
+        //精灵的锚点设置 (0 ～ 1 百分比)
+//      xiongben.anchor.set(0.5, 0.5);
+
+        //旋转
+        xiongben.rotation = 0.5;
+
+
+//        stage.addChild(xiongben);
+//        renderer.render(stage);
+    }
+
+    loader.add("../images/tileset.png").load(tileSetup);
+    function tileSetup(){
+        var texture = TextureCache["../images/tileset.png"];
+        var rectangle = new Rectangle(192, 128, 64, 64);
+        texture.frame = rectangle;
+        var rocket = new Sprite(texture);
+        rocket.position.set((500 - rocket.width)/2,(300 - rocket.height)/2);
+
+        stage.addChild(rocket);
+        renderer.render(stage);
+    }
+
+</script>
+</body>
+</html>
